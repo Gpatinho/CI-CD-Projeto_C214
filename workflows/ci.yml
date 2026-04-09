@@ -9,9 +9,8 @@ on:
       - main
 
 jobs:
-  testes:
+  tests:
     runs-on: ubuntu-latest
-
     steps:
       - name: Clonar repositório
         uses: actions/checkout@v3
@@ -26,3 +25,13 @@ jobs:
 
       - name: Rodar os testes
         run: pytest test/ -v
+
+  build:
+    runs-on: ubuntu-latest
+    # sem "needs" → roda paralelo ao tests desde o início
+    steps:
+      - name: Clonar repositório
+        uses: actions/checkout@v3
+
+      - name: Build da aplicação
+        run: echo "Build executado"
