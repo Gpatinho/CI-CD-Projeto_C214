@@ -1,20 +1,16 @@
+import random
+
+
 class SistemaFaculdade:
     def __init__(self):
         self.alunos = []
-        self.contador_cursos = {}
 
-    def gerar_matricula(self, curso):
-        curso = curso.upper()
-        if curso not in self.contador_cursos:
-            self.contador_cursos[curso] = 1
-        else:
-            self.contador_cursos[curso] += 1
-
-        return f"{curso}{self.contador_cursos[curso]}"
+    def gerar_matricula(self):
+        return str(random.randint(1000, 9999))
 
     def criar_aluno(self, nome, email, curso):
         curso = curso.upper()
-        matricula = self.gerar_matricula(curso)
+        matricula = self.gerar_matricula()
 
         aluno = {
             "nome": nome,
