@@ -35,3 +35,17 @@ jobs:
 
       - name: Build da aplicação
         run: echo "Build executado"
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [tests, build]       # aguarda AMBOS terminarem
+    steps:
+      - name: Enviar notificação
+        run: echo "Notificação enviada"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: notify               # só roda após notify
+    steps:
+      - name: Deploy da aplicação
+        run: echo "Deploy realizado"
