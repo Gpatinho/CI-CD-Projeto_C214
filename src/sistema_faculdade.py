@@ -6,7 +6,11 @@ class SistemaFaculdade:
         self.alunos = []
 
     def gerar_matricula(self):
-        return str(random.randint(1000, 9999))
+        matricula = str(random.randint(1000, 9999))
+        for aluno in self.alunos:
+            if aluno["matricula"] == matricula:
+                return self.gerar_matricula()
+        return matricula
 
     def criar_aluno(self, nome, email, curso):
         curso = curso.upper()
