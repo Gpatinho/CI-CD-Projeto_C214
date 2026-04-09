@@ -17,7 +17,9 @@ def test_matricula_formato():
     sistema = SistemaFaculdade()
     aluno = sistema.criar_aluno("Gui", "email", "ads")
 
-    assert aluno["matricula"].startswith("ADS")
+    # matricula agora é número aleatório entre 1000 e 9999
+    assert aluno["matricula"].isdigit()
+    assert 1000 <= int(aluno["matricula"]) <= 9999
 
 
 def test_lista_vazia():
@@ -32,9 +34,9 @@ def test_listar_com_alunos():
     assert len(sistema.listar_alunos()) == 1
 
 
-def test_contador_incrementa():
+def test_matriculas_unicas():
     sistema = SistemaFaculdade()
-    a1 = sistema.criar_aluno("A", "a", "eng")
-    a2 = sistema.criar_aluno("B", "b", "eng")
+    a1 = sistema.criar_aluno("A", "a@email.com", "eng")
+    a2 = sistema.criar_aluno("B", "b@email.com", "eng")
 
     assert a1["matricula"] != a2["matricula"]
