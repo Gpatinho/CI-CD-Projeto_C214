@@ -97,8 +97,8 @@ def test_atualizar_email_para_vazio():
     sistema = SistemaFaculdade()
     aluno = sistema.criar_aluno("Luiz", "luiz@gmail.com", "eng")
 
-    # sistema não valida e-mail vazio na atualização
-    resultado  = sistema.atualizar_aluno(aluno["matricula"], "Gui", "")
+    # o sistema não valida o email, então deve permitir atualizar para vazio
+    resultado  = sistema.atualizar_aluno(aluno["matricula"], "Luiz", "")
     atualizado = sistema.buscar_aluno(aluno["matricula"])
 
     assert resultado is True
