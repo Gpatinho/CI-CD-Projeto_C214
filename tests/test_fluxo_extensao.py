@@ -1,3 +1,6 @@
+from src.sistema_faculdade import SistemaFaculdade
+
+
 def test_atualizar_nao_muda_curso_nem_matricula():
     sistema = SistemaFaculdade()
     aluno = sistema.criar_aluno("Gui", "gui@email.com", "eng")
