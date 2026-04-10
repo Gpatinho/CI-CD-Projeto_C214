@@ -20,7 +20,7 @@ def enviar_email():
     run_number   = os.environ.get("GITHUB_RUN_NUMBER", "?")
     run_id       = os.environ.get("GITHUB_RUN_ID", "")
     branch       = os.environ.get("GITHUB_REF_NAME", "desconhecida")
-
+    deploy_status = os.environ.get("DEPLOY_STATUS", "unknown")
     status_geral = "SUCESSO" if tests_status == "success" and build_status == "success" else "FALHA"
 
     assunto = f"[CI/CD] {status_geral} — {repo} #{run_number}"
@@ -33,7 +33,7 @@ Execução    : #{run_number}
 
 Testes : {tests_status.upper()}
 Build  : {build_status.upper()}
-
+Deploy : {deploy_status.upper()}
 """
 
     msg = MIMEText(corpo, "plain", "utf-8")
