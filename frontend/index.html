@@ -61,7 +61,6 @@
               <th>Matrícula</th>
               <th>Nome</th>
               <th>Curso</th>
-              <th>Período</th>
               <th>E-mail</th>
               <th></th>
             </tr>
@@ -105,7 +104,7 @@
               <div class="invalid-feedback">Informe um e-mail válido.</div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-1">
               <label class="form-label">Curso</label>
               <div class="drop-wrapper" id="dropCurso">
                 <button type="button" class="drop-trigger">
@@ -126,36 +125,53 @@
               <span class="drop-feedback" id="errCurso">Selecione o curso.</span>
             </div>
 
-            <div class="mb-1">
-              <label class="form-label">Período</label>
-              <div class="drop-wrapper" id="dropPeriodo">
-                <button type="button" class="drop-trigger">
-                  <span class="drop-selected">Selecione o período...</span>
-                  <i class="bi bi-chevron-down drop-arrow"></i>
-                </button>
-                <ul class="drop-menu">
-                  <li class="drop-item" data-value="1">1º Período</li>
-                  <li class="drop-item" data-value="2">2º Período</li>
-                  <li class="drop-item" data-value="3">3º Período</li>
-                  <li class="drop-item" data-value="4">4º Período</li>
-                  <li class="drop-item" data-value="5">5º Período</li>
-                  <li class="drop-item" data-value="6">6º Período</li>
-                  <li class="drop-item" data-value="7">7º Período</li>
-                  <li class="drop-item" data-value="8">8º Período</li>
-                  <li class="drop-item" data-value="9">9º Período</li>
-                  <li class="drop-item" data-value="10">10º Período</li>
-                </ul>
-                <input type="hidden" id="fPeriodo" />
-              </div>
-              <span class="drop-feedback" id="errPeriodo">Selecione o período.</span>
-            </div>
-
           </form>
         </div>
 
         <div class="modal-footer modal-footer-custom">
           <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">Cancelar</button>
           <button type="button" class="btn-modal-save" id="btnSalvar">
+            <i class="bi bi-check-lg me-1"></i>Salvar
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal Editar ===== -->
+  <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-custom">
+
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title" id="modalEditarLabel">
+            <i class="bi bi-pencil-fill me-2"></i>Editar Aluno
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <form id="formEditar" novalidate>
+            <input type="hidden" id="eMatricula" />
+
+            <div class="mb-3">
+              <label for="eNome" class="form-label">Nome completo</label>
+              <input type="text" class="form-control field-input" id="eNome" placeholder="Ex: Maria Silva" required />
+              <div class="invalid-feedback">Informe o nome completo.</div>
+            </div>
+
+            <div class="mb-1">
+              <label for="eEmail" class="form-label">E-mail</label>
+              <input type="email" class="form-control field-input" id="eEmail" placeholder="email@exemplo.com" required />
+              <div class="invalid-feedback">Informe um e-mail válido.</div>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer modal-footer-custom">
+          <button type="button" class="btn-modal-cancel" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn-modal-save" id="btnSalvarEdicao">
             <i class="bi bi-check-lg me-1"></i>Salvar
           </button>
         </div>

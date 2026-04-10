@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Integer, create_engine
+from sqlalchemy import Column, String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Session
 
 DATABASE_URL = "sqlite:///alunos.db"
@@ -13,11 +13,10 @@ class Base(DeclarativeBase):
 class Aluno(Base):
     __tablename__ = "alunos"
 
-    matricula = Column(String,  primary_key=True)
-    nome      = Column(String,  nullable=False)
-    email     = Column(String,  nullable=False)
-    curso     = Column(String,  nullable=False)
-    periodo   = Column(Integer, nullable=False)
+    matricula = Column(String, primary_key=True)
+    nome      = Column(String, nullable=False)
+    email     = Column(String, nullable=False)
+    curso     = Column(String, nullable=False)
 
     def to_dict(self):
         return {
@@ -25,7 +24,6 @@ class Aluno(Base):
             "nome":      self.nome,
             "email":     self.email,
             "curso":     self.curso,
-            "periodo":   self.periodo,
         }
 
 

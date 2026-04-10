@@ -37,7 +37,6 @@ def criar():
         email=data['email'],
         curso=data['curso'],
     )
-    aluno_dict['periodo'] = int(data['periodo'])
 
     with get_session() as s:
         aluno = Aluno(
@@ -45,12 +44,28 @@ def criar():
             nome=aluno_dict['nome'],
             email=aluno_dict['email'],
             curso=aluno_dict['curso'],
-            periodo=aluno_dict['periodo'],
         )
         s.add(aluno)
         s.commit()
 
     return jsonify(aluno_dict), 201
+
+
+@app.put('/api/alunos/<matricula>')
+def atualizar(matricula):
+    data = request.get_json()
+    ok = sistema.atualizar_aluno(matricula, data['nome'], data['email'])
+    if not ok:
+        return jsonify({'erro': 'Aluno não encontrado'}), 404
+
+    with get_session() as s:
+        aluno = s.query(Aluno).filter_by(matricula=matricula).first()
+        if aluno:
+            aluno.nome  = data['nome']
+            aluno.email = data['email']
+            s.commit()
+
+    return jsonify(sistema.buscar_aluno(matricula))
 
 
 @app.delete('/api/alunos/<matricula>')

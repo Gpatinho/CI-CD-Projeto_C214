@@ -20,6 +20,15 @@ async function postAluno(dados) {
   return res.json();
 }
 
+async function putAluno(matricula, dados) {
+  const res = await fetch(`${API}/alunos/${encodeURIComponent(matricula)}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(dados),
+  });
+  return res.json();
+}
+
 async function deleteAluno(matricula) {
   await fetch(`${API}/alunos/${encodeURIComponent(matricula)}`, {
     method: 'DELETE',
@@ -49,7 +58,7 @@ function renderTabela() {
   if (lista.length === 0) {
     tbody.innerHTML = `
       <tr class="row-empty">
-        <td colspan="6">Nenhum aluno encontrado.</td>
+        <td colspan="5">Nenhum aluno encontrado.</td>
       </tr>`;
     info.textContent = `Exibindo 0 de ${total} aluno(s)`;
     return;
@@ -61,15 +70,28 @@ function renderTabela() {
       <td title="${aluno.matricula}">${aluno.matricula}</td>
       <td title="${aluno.nome}">${aluno.nome}</td>
       <td title="${aluno.curso}">${aluno.curso}</td>
-      <td>${aluno.periodo}º</td>
       <td title="${aluno.email}">${aluno.email}</td>
-      <td class="td-delete">
+      <td class="td-actions">
+        <button class="btn-edit" title="Editar aluno" data-mat="${aluno.matricula}">
+          <i class="bi bi-pencil-fill"></i>
+        </button>
         <button class="btn-delete" title="Excluir aluno" data-mat="${aluno.matricula}">
           <i class="bi bi-trash3-fill"></i>
         </button>
       </td>
     `;
     tbody.appendChild(tr);
+  });
+
+  tbody.querySelectorAll('.btn-edit').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const aluno = state.alunos.find((a) => a.matricula === btn.dataset.mat);
+      if (!aluno) return;
+      document.getElementById('eMatricula').value = aluno.matricula;
+      document.getElementById('eNome').value      = aluno.nome;
+      document.getElementById('eEmail').value     = aluno.email;
+      bsModalEditar.show();
+    });
   });
 
   tbody.querySelectorAll('.btn-delete').forEach((btn) => {
@@ -143,7 +165,7 @@ function closeAllDropdowns() {
 
 document.addEventListener('click', closeAllDropdowns);
 
-//  Formulário / Modal
+//  Modal Cadastrar
 const formCadastro = document.getElementById('formCadastro');
 const btnSalvar    = document.getElementById('btnSalvar');
 const modalEl      = document.getElementById('modalCadastro');
@@ -153,43 +175,60 @@ btnSalvar.addEventListener('click', async () => {
   formCadastro.classList.add('was-validated');
   const nativeOk = formCadastro.checkValidity();
 
-  const cursoVal   = document.getElementById('fCurso').value;
-  const periodoVal = document.getElementById('fPeriodo').value;
+  const cursoVal = document.getElementById('fCurso').value;
+  if (!cursoVal) document.getElementById('dropCurso').classList.add('drop-error');
 
-  if (!cursoVal)   document.getElementById('dropCurso').classList.add('drop-error');
-  if (!periodoVal) document.getElementById('dropPeriodo').classList.add('drop-error');
-
-  if (!nativeOk || !cursoVal || !periodoVal) return;
+  if (!nativeOk || !cursoVal) return;
 
   await postAluno({
-    nome:    document.getElementById('fNome').value,
-    email:   document.getElementById('fEmail').value,
-    curso:   cursoVal,
-    periodo: periodoVal,
+    nome:  document.getElementById('fNome').value,
+    email: document.getElementById('fEmail').value,
+    curso: cursoVal,
   });
 
   await carregarAlunos();
-  resetModal();
+  resetModalCadastro();
   bsModal.hide();
 });
 
-function resetModal() {
+function resetModalCadastro() {
   formCadastro.reset();
   formCadastro.classList.remove('was-validated');
 
-  ['dropCurso', 'dropPeriodo'].forEach((id) => {
-    const wrapper = document.getElementById(id);
-    wrapper.classList.remove('has-value', 'drop-error', 'open', 'closing');
-    wrapper.querySelector('.drop-selected').textContent =
-      id === 'dropCurso' ? 'Selecione o curso...' : 'Selecione o período...';
-    wrapper.querySelectorAll('.drop-item').forEach((i) => i.classList.remove('selected'));
-  });
-
-  document.getElementById('fCurso').value   = '';
-  document.getElementById('fPeriodo').value = '';
+  const wrapper = document.getElementById('dropCurso');
+  wrapper.classList.remove('has-value', 'drop-error', 'open', 'closing');
+  wrapper.querySelector('.drop-selected').textContent = 'Selecione o curso...';
+  wrapper.querySelectorAll('.drop-item').forEach((i) => i.classList.remove('selected'));
+  document.getElementById('fCurso').value = '';
 }
 
-modalEl.addEventListener('hidden.bs.modal', resetModal);
+modalEl.addEventListener('hidden.bs.modal', resetModalCadastro);
+
+//  Modal Editar
+const formEditar      = document.getElementById('formEditar');
+const btnSalvarEdicao = document.getElementById('btnSalvarEdicao');
+const modalEditarEl   = document.getElementById('modalEditar');
+const bsModalEditar   = new bootstrap.Modal(modalEditarEl);
+
+btnSalvarEdicao.addEventListener('click', async () => {
+  formEditar.classList.add('was-validated');
+  if (!formEditar.checkValidity()) return;
+
+  const matricula = document.getElementById('eMatricula').value;
+  await putAluno(matricula, {
+    nome:  document.getElementById('eNome').value,
+    email: document.getElementById('eEmail').value,
+  });
+
+  await carregarAlunos();
+  formEditar.classList.remove('was-validated');
+  bsModalEditar.hide();
+});
+
+modalEditarEl.addEventListener('hidden.bs.modal', () => {
+  formEditar.reset();
+  formEditar.classList.remove('was-validated');
+});
 
 //  Busca do aluno
 const inputBusca = document.getElementById('inputBusca');
@@ -204,7 +243,5 @@ document.getElementById('btnBuscar').addEventListener('click', () => {
   renderTabela();
 });
 
-
-initDropdown('dropCurso',   'fCurso');
-initDropdown('dropPeriodo', 'fPeriodo');
+initDropdown('dropCurso', 'fCurso');
 carregarAlunos();

@@ -174,7 +174,6 @@ body {
 
 .alunos-table thead th:last-child {
   border-radius: 0 7px 0 0;
-  width: 52px;
 }
 
 /* Linhas */
@@ -204,43 +203,59 @@ body {
 
 /* Larguras relativas por coluna */
 .alunos-table th:nth-child(1),
-.alunos-table td:nth-child(1) { width: 7%;  }   /* Matrícula (4 dígitos) */
+.alunos-table td:nth-child(1) { width: 8%;  }   /* Matrícula  */
 
 .alunos-table th:nth-child(2),
-.alunos-table td:nth-child(2) { width: 25%; }   /* Nome                  */
+.alunos-table td:nth-child(2) { width: 27%; }   /* Nome       */
 
 .alunos-table th:nth-child(3),
-.alunos-table td:nth-child(3) { width: 26%; }   /* Curso                 */
+.alunos-table td:nth-child(3) { width: 28%; }   /* Curso      */
 
 .alunos-table th:nth-child(4),
-.alunos-table td:nth-child(4) { width: 8%;  }   /* Período               */
+.alunos-table td:nth-child(4) { width: 27%; }   /* E-mail     */
 
 .alunos-table th:nth-child(5),
-.alunos-table td:nth-child(5) { width: 27%; }   /* E-mail                */
+.alunos-table td:nth-child(5) { width: 10%; }   /* Ações      */
 
-.alunos-table th:nth-child(6),
-.alunos-table td:nth-child(6) { width: 7%;  }   /* Ação                  */
-
-/* Célula do botão deletar */
-.td-delete {
+/* Célula dos botões de ação */
+.td-actions {
   text-align: center;
+  white-space: nowrap;
 }
 
+.btn-edit,
 .btn-delete {
   background: none;
   border: none;
-  color: #d32f2f;
-  font-size: 1.05rem;
+  font-size: 1rem;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 5px 7px;
   border-radius: 6px;
-  transition: color 0.15s, background-color 0.15s;
   line-height: 1;
+  transition: color 0.15s, background-color 0.15s, transform 0.1s;
+}
+
+.btn-edit {
+  color: #1565c0;
+}
+
+.btn-edit:hover {
+  color: #0d47a1;
+  background-color: #e3f0ff;
+}
+
+.btn-delete {
+  color: #d32f2f;
 }
 
 .btn-delete:hover {
   color: #b71c1c;
   background-color: #fdecea;
+}
+
+.btn-edit:active,
+.btn-delete:active {
+  transform: scale(0.88);
 }
 
 /* Linha vazia */
