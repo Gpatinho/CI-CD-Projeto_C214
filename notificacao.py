@@ -40,7 +40,8 @@ Build  : {build_status.upper()}
     msg["To"]      = email_to
     msg["Subject"] = assunto
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as servidor:
+    with smtplib.SMTP("smtp.gmail.com", 587) as servidor:
+        servidor.starttls()
         servidor.login(email_from, email_password)
         servidor.sendmail(email_from, email_to, msg.as_string())
 
