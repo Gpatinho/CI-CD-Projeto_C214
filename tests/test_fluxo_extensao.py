@@ -52,3 +52,54 @@ def test_listar_alunos_retorna_copia():
 
     # a lista interna não deve ter sido afetada
     assert len(sistema.listar_alunos()) == 1
+
+
+def test_buscar_aluno_inexistente():
+    sistema = SistemaFaculdade()
+
+    # buscar matrícula que não existe, não deve lançar exceção
+    resultado = sistema.buscar_aluno("9999")
+
+    assert resultado is None
+
+
+def test_atualizar_aluno_inexistente():
+    sistema = SistemaFaculdade()
+
+    # atualizar matrícula que não existe deve retornar Falso sem exceção
+    resultado = sistema.atualizar_aluno("9999", "Carlos", "carlos@email.com")
+
+    assert resultado is False
+
+
+def test_deletar_aluno_inexistente():
+    sistema = SistemaFaculdade()
+
+    # deletar matrícula que não existe deve retornar Falso
+    resultado = sistema.deletar_aluno("9999")
+
+    assert resultado is False
+
+
+def test_deletar_aluno_duas_vezes():
+    sistema = SistemaFaculdade()
+    aluno = sistema.criar_aluno("Gui", "gui@email.com", "eng")
+
+    primeira = sistema.deletar_aluno(aluno["matricula"])
+    segunda  = sistema.deletar_aluno(aluno["matricula"])
+
+    assert primeira is True
+    #deletar a segunda vez deve retornar Falso
+    assert segunda  is False
+
+
+def test_atualizar_email_para_vazio():
+    sistema = SistemaFaculdade()
+    aluno = sistema.criar_aluno("Luiz", "luiz@gmail.com", "eng")
+
+    # sistema não valida e-mail vazio na atualização
+    resultado  = sistema.atualizar_aluno(aluno["matricula"], "Gui", "")
+    atualizado = sistema.buscar_aluno(aluno["matricula"])
+
+    assert resultado is True
+    assert atualizado["email"] == ""
