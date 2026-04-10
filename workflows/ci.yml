@@ -24,7 +24,7 @@ jobs:
         run: pip install pytest
 
       - name: Rodar os testes
-        run: pytest test/ -v
+        run: pytest tests/ -v
 
   build:
     runs-on: ubuntu-latest
