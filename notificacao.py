@@ -9,6 +9,7 @@ def enviar_email():
     email_password = os.environ.get("EMAIL_PASSWORD", "")
     email_to       = os.environ.get("EMAIL_TO", "")
 
+    #apenas para identifcar no log
     if not all([email_from, email_password, email_to]):
         print("ERRO: EMAIL_FROM, EMAIL_PASSWORD e EMAIL_TO devem ser Secrets no GitHub Actions.", file=sys.stderr)
         sys.exit(1)
